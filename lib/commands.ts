@@ -28,4 +28,18 @@ export class Commands {
 			resolve(user);
 		});
 	}
+
+	async getAll(service: string, serviceId: string): Promise<object> {
+		return new Promise<object>(async (resolve) => {
+			var commands = await this.db.smembersAsync(`target:${service}:${serviceId}:commands`);
+			var result = {};
+
+			for(var commandId of commands) {
+				var command = await this.db.hgetallAsync(`target:${service}:${serviceId}:command:${commandId}`);
+				result[commandId] = command;
+			}
+
+			resolve(result);
+		});
+	}
 }
