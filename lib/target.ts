@@ -1,4 +1,3 @@
-import * as redis from 'redis';
 import {PromisifiedRedisClient} from './typings/redis';
 
 import {Command} from './command';
@@ -18,8 +17,8 @@ export class Target {
 		return null;
 	}
 
-	async getCommandSettings(trigger: string, defaults: object | null): Promise<object | null> {
-		var settings = await this.db.hgetallAsync('target:' + this.service + ':' + this.serviceId + ':command:' + trigger);
+	async getCommandSettings(commandId: string, defaults: object | null): Promise<object | null> {
+		var settings = await this.db.hgetallAsync('target:' + this.service + ':' + this.serviceId + ':command:' + commandId);
 
 		if(!settings) {
 			settings = {};
