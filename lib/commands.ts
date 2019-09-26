@@ -29,6 +29,14 @@ export class Commands {
 		});
 	}
 
+	async getAliases(service: string, serviceId: string): Promise<object> {
+		return new Promise<object>(async (resolve) => {
+			var aliases = await this.db.hgetallAsync(`target:${service}:${serviceId}:aliases`);
+
+			resolve(aliases);
+		});
+	}
+
 	async getAll(service: string, serviceId: string): Promise<object> {
 		return new Promise<object>(async (resolve) => {
 			var commands = await this.db.smembersAsync(`target:${service}:${serviceId}:commands`);
