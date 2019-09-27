@@ -33,7 +33,7 @@ export class Commands {
 		return new Promise<object>(async (resolve) => {
 			var aliases = await this.db.hgetallAsync(`target:${service}:${serviceId}:aliases`);
 
-			resolve(aliases);
+			resolve(aliases || {});
 		});
 	}
 
