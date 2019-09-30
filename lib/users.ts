@@ -103,9 +103,12 @@ export class Users {
 			var serviceId = await this.getServiceIdByUserId(userId, service);
 
 			if(serviceId) {
-				await this.db.hdelAsync('users:service:' + service, serviceId);
-				await this.db.hdelAsync('user:' + userId + ':services', service);
-				await this.db.delAsync('service:' + service + ':user:' + serviceId);
+				await Promise.all([
+					this.db.hdelAsync('users:service:' + service, serviceId),
+					this.db.hdelAsync('user:' + userId + ':services', service),
+					this.db.delAsync('service:' + service + ':user:' + serviceId),
+					this.db.sremAsync(`service:${service}:targets:enabled`, serviceId)
+				]);
 			}
 
 			resolve();
