@@ -68,6 +68,10 @@ export class Target {
 		return await this.db.hgetAsync('target:' + this.service + ':' + this.serviceId, 'username');
 	}
 
+	async getPlugins(): Promise<string[]> {
+		return await this.db.smembersAsync(`target:${this.service}:${this.serviceId}:plugins`);
+	}
+
 	async isPluginEnabled(plugin: string): Promise<boolean> {
 		var result = await this.db.sismemberAsync('target:' + this.service + ':' + this.serviceId + ':plugins', plugin);
 		return (result == 1) ? true : false;
